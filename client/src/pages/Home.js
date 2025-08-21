@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { useCoinData } from "../context/CoinDataContext";
 import AddInvestmentModal from "../components/AddToPortfolioModal"; 
+import { API_BASE_URL } from "../api";
+
 
 export default function Home() {
   const { allCoins, loading } = useCoinData();
@@ -17,7 +19,7 @@ export default function Home() {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const res = await fetch("http://localhost:5000/api/user/watchlist", {
+      const res = await fetch("${API_BASE_URL}/user/watchlist", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -44,7 +46,7 @@ export default function Home() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:5000/api/user/watchlist", {
+      const res = await fetch("${API_BASE_URL}/user/watchlist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
