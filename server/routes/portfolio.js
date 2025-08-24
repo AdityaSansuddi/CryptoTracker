@@ -5,6 +5,14 @@ import axios from "axios";
 
 const router = express.Router();
 
+// --- NEW: A simple in-memory cache for CoinGecko prices ---
+const priceCache = {
+  data: null,
+  lastFetch: 0,
+};
+
+const CACHE_DURATION = 120 * 1000; // 2 minutes in milliseconds
+
 router.post("/add", protect , async (req, res) => {
   try {
     const { coinId, name, symbol, image, buyPrice, quantity } = req.body;
@@ -72,12 +80,27 @@ router.get("/", protect , async (req, res) => {
   try {
     const portfolio = await Portfolio.find({ userId: req.user.id });
 
-    if (!portfolio.length) return res.json([]);
+    if (!portfolio.length) {
+      return res.json({ portfolio: [], totalInvestment: 0, currentValue: 0 });
+    }
 
     const ids = portfolio.map(p => p.coinId).join(",");
-    const { data } = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
-    );
+    let priceData;
+        const now = Date.now();
+    if (priceCache.lastFetch + CACHE_DURATION > now && priceCache.data) {
+      // Use cached data if it's recent
+      priceData = priceCache.data;
+    } else {
+      // If cache is old or empty, fetch from CoinGecko
+      const response = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`
+      );
+      priceData = response.data;
+      // Update the cache
+      priceCache.data = priceData;
+      priceCache.lastFetch = now;
+    }
+
 
     let totalInvestment = 0;
     let currentValue = 0;
