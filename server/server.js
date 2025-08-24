@@ -12,7 +12,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: "https://crypto-tracker-pi-ten.vercel.app", 
+  origin: "http://localhost:3000",
   credentials: true
 }));
 
