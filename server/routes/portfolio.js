@@ -117,7 +117,11 @@ router.get("/", protect , async (req, res) => {
       topLosers: sortedByPL.slice(-3),
     });
   } catch (err) {
+    // --- THIS LOG IS THE MOST IMPORTANT PART ---
+    // It will print the exact error to your Render logs
+    console.error("!!! ERROR in GET /api/portfolio:", err); 
     res.status(500).json({ error: "Error fetching portfolio" });
+    
   }
 });
 
