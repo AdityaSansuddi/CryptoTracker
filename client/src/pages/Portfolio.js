@@ -6,6 +6,8 @@ import { Doughnut } from 'react-chartjs-2';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import SellCoinModal from "../components/SellCoinModal";
+import { API_BASE_URL } from "../api"; 
+
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -35,7 +37,7 @@ export default function Portfolio() {
   const fetchPortfolio = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/portfolio", {
+      const res = await fetch(`${API_BASE_URL}/portfolio`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -70,7 +72,7 @@ export default function Portfolio() {
   const handleConfirmSale = async (coinId, quantity) => {
     try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/portfolio/sell`, {
+        const res = await fetch(`${API_BASE_URL}/portfolio/sell`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

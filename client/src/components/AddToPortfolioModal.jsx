@@ -1,5 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "../api"; 
+
 
 export default function AddInvestmentModal({ coin, onClose, onAdd }) {
   const [quantity, setQuantity] = useState("");
@@ -15,7 +17,7 @@ export default function AddInvestmentModal({ coin, onClose, onAdd }) {
   if (!token) return toast.error("Please login first");
 
   try {
-    await fetch("http://localhost:5000/api/portfolio/add", {
+    await fetch(`${API_BASE_URL}/portfolio/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
