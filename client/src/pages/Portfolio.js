@@ -38,6 +38,7 @@ export default function Portfolio() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_BASE_URL}/portfolio`, {
+        method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
