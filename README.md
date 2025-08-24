@@ -1,5 +1,5 @@
 Project Links
 
-Backend: https://cryptotracker-backend-222i.onrender.com/
+Backend: https://cryptotracker-backend-qtcz.onrender.com/
 
-Frontend: https://crypto-tracker-zeta-hazel.vercel.app/
+Frontend: https://crypto-tracker-ochre-rho.vercel.app/
